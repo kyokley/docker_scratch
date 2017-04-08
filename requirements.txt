@@ -1,0 +1,4 @@
+pdbpp
+bpython
+celery
+redis
