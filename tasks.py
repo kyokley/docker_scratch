@@ -2,7 +2,7 @@ import time
 import random
 from celery import Celery
 
-app = Celery('tasks', backend='redis://redis', broker='pyamqp://rabbit')
+app = Celery('tasks', backend='redis://redis', broker='pyamqp://admin:mypass@rabbit')
 
 @app.task
 def add(x, y):
@@ -11,10 +11,14 @@ def add(x, y):
 
 if __name__ == '__main__':
     results = [add.delay(random.randint(0, 10),
-                         random.randint(0, 10)) for x in range(10)]
+                         random.randint(0, 10)) for x in range(200)]
 
-    while any([not result.ready() for result in results]):
+    remaining = [result for result in results if not result.ready()]
+    while remaining:
         time.sleep(1)
+        print('%s remaining' % len(remaining))
+        remaining = [result for result in results if not result.ready()]
 
     for result in results:
         print(result.result)
+    print('done')

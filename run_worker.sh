@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# sleep 10
+echo "Waiting for rabbit/redis to start up"
+sleep 10
+echo "Let's go!"
 
-cd myproject
-
-su -m myuser -c "celery worker -A myproject.tasks -Q default -n default@%h"
+su -m myuser -c "celery worker -A tasks -n default@%h"

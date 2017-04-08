@@ -1,15 +1,15 @@
 version: '2'
 
 services:
-    db:
-        image: postgres
-        hostname: db
-        environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            - POSTGRES_DB=postgres
-        ports:
-            - "5432:5432"
+    #db:
+        #image: postgres
+        #hostname: db
+        #environment:
+            #- POSTGRES_USER=postgres
+            #- POSTGRES_PASSWORD=postgres
+            #- POSTGRES_DB=postgres
+        #ports:
+            #- "5432:5432"
 
 
     redis:
@@ -28,31 +28,33 @@ services:
             - "15672:15672"  # here, we can access rabbitmq management plugin
 
 
-    master:
+    master_node:
         build:
             context: .
-        dockerfile: Dockerfile
+            dockerfile: Dockerfile
         hostname: master
         command: ./run_master.sh
         volumes:
             - .:/app  # mount current directory inside container
         links:
-            - db
+            #- db
             - rabbit
             - redis
         depends_on:
-            - db
+            #- db
+            - rabbit
+            - redis
 
 
-    worker:
+    worker_node:
         build:
             context: .
-        dockerfile: Dockerfile
+            dockerfile: Dockerfile
         command: ./run_worker.sh
         volumes:
             - .:/app
         links:
-            - db
+            #- db
             - rabbit
             - redis
         depends_on:
