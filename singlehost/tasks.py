@@ -1,10 +1,8 @@
 import time
 import random
 from celery import Celery
-from local_settings import IP_ADDR
 
-AMQP_URL = 'amqp://admin:mypass@{}'.format(IP_ADDR)
-app = Celery('tasks', backend='rpc://', broker=AMQP_URL)
+app = Celery('tasks', backend='rpc://', broker='amqp://admin:mypass@rabbit')
 
 @app.task
 def add(x, y):
@@ -13,7 +11,7 @@ def add(x, y):
 
 if __name__ == '__main__':
     results = [add.delay(random.randint(0, 10),
-                         random.randint(0, 10)) for x in range(1000)]
+                         random.randint(0, 10)) for x in range(100)]
 
     remaining = [result for result in results if not result.ready()]
     while remaining:
