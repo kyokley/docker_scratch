@@ -1,8 +1,10 @@
 import time
 import random
 from celery import Celery
+from local_settings import IP_ADDR
 
-app = Celery('tasks', backend='redis://redis', broker='pyamqp://admin:mypass@rabbit')
+AMQP_URL = 'amqp://admin:mypass@{}'.format(IP_ADDR)
+app = Celery('tasks', backend='rpc://', broker=AMQP_URL)
 
 @app.task
 def add(x, y):
