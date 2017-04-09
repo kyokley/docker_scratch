@@ -13,7 +13,7 @@ def add(x, y):
 
 if __name__ == '__main__':
     results = [add.delay(random.randint(0, 10),
-                         random.randint(0, 10)) for x in range(200)]
+                         random.randint(0, 10)) for x in range(1000)]
 
     remaining = [result for result in results if not result.ready()]
     while remaining:
