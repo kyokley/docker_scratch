@@ -1,11 +1,6 @@
 version: '2'
 
 services:
-    redis:
-        image: redis:2.8.19
-        hostname: redis
-
-
     rabbit:
         hostname: rabbit
         image: rabbitmq:3.6.0
@@ -27,10 +22,8 @@ services:
             - .:/app  # mount current directory inside container
         links:
             - rabbit
-            - redis
         depends_on:
             - rabbit
-            - redis
 
 
     worker_node:
@@ -42,6 +35,5 @@ services:
             - .:/app
         links:
             - rabbit
-            - redis
         depends_on:
             - rabbit
