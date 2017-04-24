@@ -19,3 +19,9 @@ services:
         hostname: master
         depends_on:
             - "rabbit"
+
+    worker_node:
+        image: kyokley/multihost_worker
+        build:
+            context: .
+            dockerfile: worker/Dockerfile
