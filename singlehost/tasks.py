@@ -3,6 +3,7 @@ import random
 from celery import Celery
 
 app = Celery('tasks', backend='rpc://', broker='amqp://admin:mypass@rabbit')
+WORK = 100
 
 @app.task
 def add(x, y):
@@ -11,7 +12,7 @@ def add(x, y):
 
 if __name__ == '__main__':
     results = [add.delay(random.randint(0, 10),
-                         random.randint(0, 10)) for x in range(100)]
+                         random.randint(0, 10)) for x in range(WORK)]
 
     remaining = [result for result in results if not result.ready()]
     while remaining:

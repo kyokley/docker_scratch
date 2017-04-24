@@ -3,3 +3,6 @@ version: '2'
 services:
     worker_node:
         image: kyokley/multihost_worker
+        build:
+            context: .
+            dockerfile: worker/Dockerfile

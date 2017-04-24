@@ -6,4 +6,4 @@ WORKDIR /app/
 
 RUN pip install -r requirements.txt
 
-CMD python -u tasks.py
+CMD sleep 10 && python -u tasks.py
